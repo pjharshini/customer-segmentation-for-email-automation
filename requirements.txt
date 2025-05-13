@@ -1,0 +1,6 @@
+pandas
+openpyxl
+yagmail
+schedule
+scikit-learn 
+flask
