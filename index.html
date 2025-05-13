@@ -1,271 +1,201 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Customer Segmentation</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telecom Churn Prediction</title>
     <style>
-      body {
-        font-family: 'Roboto', Arial, sans-serif;
-        background: linear-gradient(135deg, #e0e7ef 0%, #f8fafc 60%, #38b2ac 100%);
-        min-height: 100vh;
-        margin: 0;
-        padding: 0;
-      }
-      .container {
-        max-width: 600px;
-        margin: 48px auto 0 auto;
-        padding: 36px 36px 24px 36px;
-        background: #fff;
-        border-radius: 18px;
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-      }
-      h1 {
-        text-align: center;
-        font-weight: 700;
-        color: #2563eb;
-        margin-bottom: 36px;
-        letter-spacing: 1px;
-      }
-      .form-group {
-        margin-bottom: 22px;
-      }
-      label {
-        display: block;
-        margin-bottom: 7px;
-        font-weight: 500;
-        color: #374151;
-      }
-      input {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid #cbd5e1;
-        border-radius: 7px;
-        font-size: 1rem;
-        background: #f1f5f9;
-        transition: border 0.2s;
-      }
-      input:focus {
-        border: 1.5px solid #38b2ac;
-        outline: none;
-        background: #fff;
-      }
-      button {
-        width: 100%;
-        padding: 14px 0;
-        background: linear-gradient(90deg, #2563eb 0%, #38b2ac 100%);
-        color: white;
-        border: none;
-        border-radius: 9px;
-        font-size: 1.15rem;
-        font-weight: 700;
-        cursor: pointer;
-        margin-top: 12px;
-        box-shadow: 0 2px 8px rgba(56, 178, 172, 0.10);
-        transition: background 0.2s, transform 0.1s;
-        letter-spacing: 0.5px;
-      }
-      button:hover {
-        background: linear-gradient(90deg, #38b2ac 0%, #2563eb 100%);
-        transform: translateY(-2px) scale(1.02);
-      }
-      #loading {
-        display: none;
-        margin-top: 24px;
-        color: #2563eb;
-        font-weight: bold;
-        text-align: center;
-        letter-spacing: 1px;
-      }
-      #error {
-        display: none;
-        margin-top: 24px;
-        color: #e53e3e;
-        font-weight: bold;
-        background: #fff0f0;
-        border: 1px solid #fbb6b6;
-        border-radius: 10px;
-        padding: 14px;
-        text-align: center;
-        transition: all 0.3s;
-      }
-      #result {
-        display: none;
-        margin-top: 36px;
-        padding: 28px 26px 22px 26px;
-        background: #f1f5f9;
-        border: 1px solid #cbd5e1;
-        border-radius: 14px;
-        box-shadow: 0 2px 12px 0 rgba(31, 38, 135, 0.07);
-        transition: all 0.3s;
-      }
-      #result h3 {
-        margin-top: 0;
-        color: #2563eb;
-        font-weight: 700;
-        margin-bottom: 18px;
-        letter-spacing: 0.5px;
-      }
-      #result .subheading {
-        font-weight: 700;
-        font-size: 1.13rem;
-        margin-top: 18px;
-        margin-bottom: 12px;
-        color: #22223b;
-        letter-spacing: 0.2px;
-      }
-      #result ul {
-        padding-left: 22px;
-        margin: 0 0 0 0;
-      }
-      #result li {
-        margin-bottom: 10px;
-        font-size: 1.08rem;
-        color: #374151;
-        letter-spacing: 0.1px;
-      }
-      @media (max-width: 700px) {
-        .container {
-          padding: 16px 4vw 10px 4vw;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
         }
-        #result {
-          padding: 18px 6vw 14px 6vw;
+        form {
+            max-width: 500px;
+            margin: auto;
         }
-      }
+        label {
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+        #prediction-result {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: blue;
+            text-align: center;
+        }
     </style>
-  </head>
-  <body>
-    <div class="container">
-      <h1>Customer Segmentation</h1>
+</head>
+<body>
+    <h2>Telecom Churn Prediction</h2>
+    <form id="churn-form">
+        <label>Gender:</label>
+        <select id="gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
 
-      <div id="loading">Processing... Please wait.</div>
-      <div id="error"></div>
-      <div id="result"></div>
+        <label>Senior Citizen:</label>
+        <select id="SeniorCitizen">
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select>
 
-      <form id="customerForm">
-        <div class="form-group">
-          <label for="InvoiceNo">Invoice No:</label>
-          <input type="text" id="InvoiceNo" name="InvoiceNo" required />
-        </div>
+        <label>Partner:</label>
+        <select id="Partner">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
 
-        <div class="form-group">
-          <label for="StockCode">Stock Code:</label>
-          <input type="text" id="StockCode" name="StockCode" required />
-        </div>
+        <label>Dependents:</label>
+        <select id="Dependents">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
 
-        <div class="form-group">
-          <label for="Description">Description:</label>
-          <input type="text" id="Description" name="Description" required />
-        </div>
+        <label>Tenure (months):</label>
+        <input type="number" id="tenure" required>
 
-        <div class="form-group">
-          <label for="Quantity">Quantity:</label>
-          <input type="number" id="Quantity" name="Quantity" required />
-        </div>
+        <label>Phone Service:</label>
+        <select id="PhoneService">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
 
-        <div class="form-group">
-          <label for="InvoiceDate"
-            >Invoice Date and Time (MM/DD/YYYY HH:MM, 24hr):</label
-          >
-          <input
-            type="text"
-            id="InvoiceDate"
-            name="InvoiceDate"
-            placeholder="12/1/2010 08:26"
-            required
-          />
-        </div>
+        <label>Multiple Lines:</label>
+        <select id="MultipleLines">
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+        </select>
 
-        <div class="form-group">
-          <label for="UnitPrice">Unit Price:</label>
-          <input
-            type="number"
-            step="0.01"
-            id="UnitPrice"
-            name="UnitPrice"
-            required
-          />
-        </div>
+        <label>Internet Service:</label>
+        <select id="InternetService">
+            <option value="DSL">DSL</option>
+            <option value="Fiber optic">Fiber optic</option>
+            <option value="No">No</option>
+        </select>
 
-        <div class="form-group">
-          <label for="CustomerID">Customer ID:</label>
-          <input type="text" id="CustomerID" name="CustomerID" required />
-        </div>
+        <label>Online Security:</label>
+        <select id="OnlineSecurity">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
 
-        <div class="form-group">
-          <label for="Country">Country:</label>
-          <input type="text" id="Country" name="Country" required />
-        </div>
+        <label>Online Backup:</label>
+        <select id="OnlineBackup">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
 
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+        <label>Device Protection:</label>
+        <select id="DeviceProtection">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+
+        <label>Tech Support:</label>
+        <select id="TechSupport">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+
+        <label>Streaming TV:</label>
+        <select id="StreamingTV">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+
+        <label>Streaming Movies:</label>
+        <select id="StreamingMovies">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+
+        <label>Contract:</label>
+        <select id="Contract">
+            <option value="Month-to-month">Month-to-month</option>
+            <option value="One year">One year</option>
+            <option value="Two year">Two year</option>
+        </select>
+
+        <label>Paperless Billing:</label>
+        <select id="PaperlessBilling">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+
+        <label>Payment Method:</label>
+        <select id="PaymentMethod">
+            <option value="Electronic check">Electronic check</option>
+            <option value="Mailed check">Mailed check</option>
+            <option value="Bank transfer (automatic)">Bank transfer (automatic)</option>
+            <option value="Credit card (automatic)">Credit card (automatic)</option>
+        </select>
+
+        <label>Monthly Charges:</label>
+        <input type="number" id="MonthlyCharges" required>
+
+        <label>Total Charges:</label>
+        <input type="number" id="TotalCharges" required>
+
+        <button type="submit">Predict</button>
+    </form>
+
+    <div id="prediction-result"></div>
+
     <script>
-      const form = document.getElementById("customerForm");
-      const loading = document.getElementById("loading");
-      const error = document.getElementById("error");
-      const result = document.getElementById("result");
+        document.getElementById("churn-form").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent page refresh
 
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        // Reset UI states
-        loading.style.display = "block";
-        error.style.display = "none";
-        result.style.display = "none";
-
-        const formData = new FormData(e.target);
-        const data = Object.fromEntries(formData.entries());
-
-        fetch("/predict", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        })
-          .then((response) => {
-            if (!response.ok) {
-              return response.json().then((data) => {
-                throw new Error(data.error || "Server error occurred");
-              });
-            }
-            return response.json();
-          })
-          .then((data) => {
-            loading.style.display = "none";
-            result.style.display = "block";
-            // Segment number to name mapping
-            const segmentNames = {
-              0: "Active",
-              1: "At Risk",
-              2: "Inactive",
-              3: "Loyal",
-              4: "Upcoming"
+            let userInput = {
+                gender: document.getElementById("gender").value,
+                SeniorCitizen: parseInt(document.getElementById("SeniorCitizen").value),
+                Partner: document.getElementById("Partner").value,
+                Dependents: document.getElementById("Dependents").value,
+                tenure: parseInt(document.getElementById("tenure").value),
+                PhoneService: document.getElementById("PhoneService").value,
+                MultipleLines: document.getElementById("MultipleLines").value,
+                InternetService: document.getElementById("InternetService").value,
+                OnlineSecurity: document.getElementById("OnlineSecurity").value,
+                OnlineBackup: document.getElementById("OnlineBackup").value,
+                DeviceProtection: document.getElementById("DeviceProtection").value,
+                TechSupport: document.getElementById("TechSupport").value,
+                StreamingTV: document.getElementById("StreamingTV").value,
+                StreamingMovies: document.getElementById("StreamingMovies").value,
+                Contract: document.getElementById("Contract").value,
+                PaperlessBilling: document.getElementById("PaperlessBilling").value,
+                PaymentMethod: document.getElementById("PaymentMethod").value,
+                MonthlyCharges: parseFloat(document.getElementById("MonthlyCharges").value),
+                TotalCharges: parseFloat(document.getElementById("TotalCharges").value)
             };
-            const segmentDisplay = segmentNames[data.segment_number] !== undefined ? segmentNames[data.segment_number] : data.segment_number;
-            result.innerHTML = `
-              <h3>Results</h3>
-              <div style="margin-bottom: 18px;"></div>
-              <div class="subheading">Your segment is:</div>
-              <p style="font-size:1.18rem; font-weight:700; color:#2563eb; margin-bottom: 22px;">${segmentDisplay}</p>
-              <div class="subheading">RFM Analysis:</div>
-              <ul style="margin-bottom: 0;">
-                <li>Recency: <strong>${data.rfm_values.recency}</strong> days since last purchase</li>
-                <li>Frequency: <strong>${data.rfm_values.frequency}</strong> purchases</li>
-                <li>Monetary: <strong>${data.rfm_values.monetary.toFixed(2)}</strong> total spending</li>
-              </ul>
-            `;
-          })
-          .catch((error) => {
-            loading.style.display = "none";
-            const errorDiv = document.getElementById("error");
-            errorDiv.style.display = "block";
-            errorDiv.textContent = `Error: ${
-              error.message || "An unknown error occurred"
-            }`;
-          });
-      });
+
+            fetch("http://127.0.0.1:5000/predict", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(userInput),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Prediction Response:", data); // Debugging
+                document.getElementById("prediction-result").innerText = `Prediction: ${data.prediction}`;
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                document.getElementById("prediction-result").innerText = "Error in prediction!";
+            });
+        });
     </script>
-  </body>
+</body>
 </html>

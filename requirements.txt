@@ -1,6 +1,6 @@
+Flask
+flask-cors
+numpy
 pandas
+scikit-learn
 openpyxl
-yagmail
-schedule
-scikit-learn 
-flask
